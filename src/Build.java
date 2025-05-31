@@ -81,7 +81,6 @@ public class Build {
     for (Vertex<T> neighbor : vertex.neighbors) {
       printSelfLoopersHelper(neighbor, visited);
     }
-
   }
 
   /**
@@ -93,13 +92,27 @@ public class Build {
    * @return true if the destination is reachable from the start, false otherwise
    */
   public static boolean canReach(Airport start, Airport destination) {
+    if (start == null || destination == null) return false;
+    if (start == destination) return true;
+
+    Set<Airport> visited = new HashSet<>();
+    return canReach(start, destination, visited);
+  }
+
+  public static boolean canReach(Airport start, Airport destination, Set<Airport> visited) {
+    if (start == destination) return true;
+    if (visited.contains(start)) return false;
+
+    visited.add(start);
+
+    for (Airport neighbor : start.getOutboundFlights()) {
+        if (canReach(neighbor, destination, visited)) {
+            return true;
+        }
+    }
 
     return false;
   }
-
-  // public static boolean canReach(Airport start, Airport destination, Set<Airport> visited) {
-
-  // }
 
   /**
    * Returns the set of all values in the graph that cannot be reached from the given starting value.
