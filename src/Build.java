@@ -66,6 +66,22 @@ public class Build {
    * @param <T> the type of values stored in the vertices
    */
   public static <T> void printSelfLoopers(Vertex<T> vertex) {
+    Set<Vertex<T>> visited = new HashSet<>();
+    printSelfLoopersHelper(vertex, visited);
+  }
+
+  public static <T> void printSelfLoopersHelper(Vertex<T> vertex, Set<Vertex<T>> visited) {
+    if (vertex == null || visited.contains(vertex)) return;
+
+    visited.add(vertex);
+
+    if (vertex.neighbors.contains(vertex)) {
+      System.out.println(vertex.data);
+    }
+    for (Vertex<T> neighbor : vertex.neighbors) {
+      printSelfLoopersHelper(neighbor, visited);
+    }
+
   }
 
   /**
@@ -77,8 +93,13 @@ public class Build {
    * @return true if the destination is reachable from the start, false otherwise
    */
   public static boolean canReach(Airport start, Airport destination) {
+
     return false;
   }
+
+  // public static boolean canReach(Airport start, Airport destination, Set<Airport> visited) {
+
+  // }
 
   /**
    * Returns the set of all values in the graph that cannot be reached from the given starting value.
